@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Persediaan Penjualan</title>
+    <style>
+        :root {
+            --rose-quartz: #F7CAC9;
+            --serenity: #91A8D0;
+            --black: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--rose-quartz), var(--serenity));
+            color: var(--black);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: var(--black);
+            color: var(--rose-quartz);
+        }
+
+        .header img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            background: var(--serenity);
+            padding: 10px;
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--black);
+            transition: all 0.3s;
+        }
+
+        .nav button:hover, .nav button.active {
+            background: var(--rose-quartz);
+            border-radius: 5px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--rose-quartz);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--serenity);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background: var(--serenity);
+            color: var(--black);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: var(--rose-quartz);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--serenity);
+        }
+
+        th {
+            background: var(--black);
+            color: var(--rose-quartz);
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+            }
+
+            .nav button {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://png.pngtree.com/png-vector/20231214/ourmid/pngtree-purple-penguin-3d-cute-icon-element-png-image_11347892.png" alt="Logo">
+            <h1>Aplikasi Persediaan Penjualan</h1>
+        </div>
+        <div class="nav">
+            <button class="active" onclick="showSection('stock')">Stok Barang</button>
+            <button onclick="showSection('add')">Tambah Produk</button>
+            <button onclick="showSection('sales')">Riwayat Penjualan</button>
+        </div>
+        <div class="content">
+            <div id="stock" class="section active">
+                <h2>Stok Barang</h2>
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Produk</th>
+                                <th>Jumlah</th>
+                                <th>Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockTable">
+                            <tr>
+                                <td>1</td>
+                                <td>Baju</td>
+                                <td>50</td>
+                                <td>Rp 100.000</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Celana</td>
+                                <td>30</td>
+                                <td>Rp 150.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="add" class="section">
+                <h2>Tambah Produk</h2>
+                <div class="card">
+                    <div class="form-group">
+                        <label for="productName">Nama Produk</label>
+                        <input type="text" id="productName" placeholder="Masukkan nama produk">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Jumlah</label>
+                        <input type="number" id="quantity" placeholder="Masukkan jumlah">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Harga</label>
+                        <input type="number" id="price" placeholder="Masukkan harga">
+                    </div>
+                    <button onclick="addProduct()">Tambah Produk</button>
+                </div>
+            </div>
+            <div id="sales" class="section">
+                <h2>Riwayat Penjualan</h2>
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Produk</th>
+                                <th>Jumlah</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="salesTable">
+                            <tr>
+                                <td>2025-04-12</td>
+                                <td>Baju</td>
+                                <td>5</td>
+                                <td>Rp 500.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelector(`button[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+
+        function addProduct() {
+            const name = document.getElementById('productName').value;
+            const quantity = document.getElementById('quantity').value;
+            const price = document.getElementById('price').value;
+
+            if (name && quantity && price) {
+                const table = document.getElementById('stockTable');
+                const row = table.insertRow();
+                row.innerHTML = `
+                    <td>${table.rows.length}</td>
+                    <td>${name}</td>
+                    <td>${quantity}</td>
+                    <td>Rp ${Number(price).toLocaleString()}</td>
+                `;
+                alert('Produk berhasil ditambahkan!');
+                document.getElementById('productName').value = '';
+                document.getElementById('quantity').value = '';
+                document.getElementById('price').value = '';
+            } else {
+                alert('Lengkapi semua kolom!');
+            }
+        }
+    </script>
+</body>
+</html>
